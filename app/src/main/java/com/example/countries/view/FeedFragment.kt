@@ -48,7 +48,7 @@ class FeedFragment : Fragment() {
             binding.countryList.visibility = View.GONE
             binding.errorTextview.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
-            viewModel.refreshData()
+            viewModel.refreshFromAPI()
             binding.swipeRefreshLayout.isRefreshing = false
         }
 

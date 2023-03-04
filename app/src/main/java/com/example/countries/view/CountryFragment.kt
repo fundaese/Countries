@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.countries.R
 import com.example.countries.databinding.FragmentCountryBinding
 import com.example.countries.databinding.FragmentFeedBinding
+import com.example.countries.util.downloadFromUrl
+import com.example.countries.util.placeholderProgressBar
 import com.example.countries.viewmodel.CountryViewModel
 
 class CountryFragment : Fragment() {
@@ -36,12 +38,12 @@ class CountryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(CountryViewModel::class.java)
-        viewModel.getDataFromRoom()
-
         arguments?.let {
             countryUuid = CountryFragmentArgs.fromBundle(it).countryUuid
         }
+
+        viewModel = ViewModelProviders.of(this).get(CountryViewModel::class.java)
+        viewModel.getDataFromRoom(countryUuid)
 
         observeLiveData()
     }
@@ -54,6 +56,9 @@ class CountryFragment : Fragment() {
                 binding.countryCurrency.text = country.countryCurrency
                 binding.countryLanguage.text = country.countryLanguage
                 binding.countryRegion.text = country.countryRegion
+                context?.let {
+                    binding.countryImage.downloadFromUrl(country.imageUrl, placeholderProgressBar(it))
+                }
             }
         })
     }
